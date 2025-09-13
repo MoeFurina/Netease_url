@@ -188,7 +188,18 @@ class NeteaseAPI:
             
             result = json.loads(response_text)
             if result.get('code') != 200:
-                raise APIException(f"获取歌曲URL失败: {result.get('message', '未知错误')}")
+                error_msg = f"获取歌曲URL失败: {result.get('message', '未知错误')}, code: {result.get('code')}, data: {result.get('data')}"
+                if not cookies or not any(key in cookies for key in ['MUSIC_U', 'MUSIC_A']):
+                    error_msg += " (Cookie无效或未登录)"
+                raise APIException(error_msg)
+            
+            data = result.get('data', [])
+            if not data or not data[0].get('url'):
+                error_msg = f"音乐链接获取失败 - quality: {quality}, response: {result}"
+                if quality not in ['standard', 'exhigh']:
+                    error_msg += f"\n当前音质({quality})需要更高级的会员，尝试降级到 'exhigh' 音质"
+                    return self.get_song_url(song_id, 'exhigh', cookies)
+                raise APIException(error_msg)
             
             return result
         except (json.JSONDecodeError, KeyError) as e:
