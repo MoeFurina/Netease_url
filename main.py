@@ -9,6 +9,7 @@
 """
 
 import logging
+import os
 import sys
 import time
 import traceback
@@ -36,9 +37,9 @@ except ImportError as e:
 class APIConfig:
     """API配置类"""
     host: str = '0.0.0.0'
-    port: int = 5000
+    port: int = int(os.environ.get('PORT', 5000))
     debug: bool = False
-    downloads_dir: str = 'downloads'
+    downloads_dir: str = '/tmp/downloads' if bool(os.environ.get('VERCEL')) else 'downloads'
     max_file_size: int = 500 * 1024 * 1024  # 500MB
     request_timeout: int = 30
     log_level: str = 'INFO'
@@ -103,18 +104,23 @@ class MusicAPIService:
             console_handler.setFormatter(console_formatter)
             logger.addHandler(console_handler)
             
-            # 文件处理器
-            try:
-                file_handler = logging.FileHandler('music_api.log', encoding='utf-8')
-                file_formatter = logging.Formatter(
-                    '%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s'
-                )
-                file_handler.setFormatter(file_formatter)
-                logger.addHandler(file_handler)
-            except Exception as e:
-                logger.warning(f"无法创建日志文件: {e}")
+            # 在 Vercel 环境中跳过文件日志
+            if not self._is_vercel_env():
+                try:
+                    file_handler = logging.FileHandler('music_api.log', encoding='utf-8')
+                    file_formatter = logging.Formatter(
+                        '%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s'
+                    )
+                    file_handler.setFormatter(file_formatter)
+                    logger.addHandler(file_handler)
+                except Exception as e:
+                    logger.warning(f"无法创建日志文件: {e}")
         
         return logger
+    
+    def _is_vercel_env(self) -> bool:
+        """检查是否在 Vercel 环境中运行"""
+        return bool(os.environ.get('VERCEL'))
     
     def _get_cookies(self) -> Dict[str, str]:
         """获取Cookie"""
