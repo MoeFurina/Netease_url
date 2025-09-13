@@ -57,8 +57,8 @@ class CookieManager:
             'WNMCID',       # 客户端标识
         }
         
-        # 确保cookie文件存在
-        self._ensure_cookie_file_exists()
+        # 检查环境变量
+        self.env_cookie = os.environ.get('NETEASE_COOKIE')
     
     def _ensure_cookie_file_exists(self) -> None:
         """确保Cookie文件存在"""
@@ -67,7 +67,7 @@ class CookieManager:
             self.logger.info(f"创建Cookie文件: {self.cookie_file}")
     
     def read_cookie(self) -> str:
-        """读取Cookie文件内容
+        """读取Cookie内容
         
         Returns:
             Cookie字符串内容
@@ -76,6 +76,12 @@ class CookieManager:
             CookieException: 读取失败时抛出
         """
         try:
+            # 优先使用环境变量中的cookie
+            if self.env_cookie:
+                self.logger.debug("使用环境变量中的Cookie")
+                return self.env_cookie
+            
+            # 如果环境变量中没有cookie，则从文件读取
             if not self.cookie_file.exists():
                 self.logger.warning(f"Cookie文件不存在: {self.cookie_file}")
                 return ""
