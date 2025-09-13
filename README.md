@@ -2,16 +2,16 @@
 
 <div align="center">
 
-![GitHub stars](https://img.shields.io/github/stars/Suxiaoqinx/Netease_url?style=flat-square)
-![GitHub forks](https://img.shields.io/github/forks/Suxiaoqinx/Netease_url?style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/Suxiaoqinx/Netease_url?style=flat-square)
-![GitHub license](https://img.shields.io/github/license/Suxiaoqinx/Netease_url?style=flat-square)
+![GitHub stars](https://img.shields.io/github/stars/moefurina/Netease_url?style=flat-square)
+![GitHub forks](https://img.shields.io/github/forks/moefurina/Netease_url?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/moefurina/Netease_url?style=flat-square)
+![GitHub license](https://img.shields.io/github/license/moefurina/Netease_url?style=flat-square)
 
 **功能强大的网易云音乐解析工具**
 
 支持歌曲搜索 | 单曲解析 | 歌单解析 | 专辑解析 | 音乐下载
 
-[在线体验](https://api.toubiec.cn/wyapi.html) • [使用文档](./使用文档.md) • [问题反馈](https://github.com/Suxiaoqinx/Netease_url/issues)
+[在线体验](https://netease-url.march7th.icu) • [问题反馈](https://github.com/moefurina/Netease_url/issues)
 
 </div>
 
@@ -56,12 +56,19 @@
 - Python 3.7+
 - 网易云音乐黑胶会员账号
 
-### 安装步骤
+### Vercel部署步骤
+
+1. Fork本仓库
+2. 在 Vercel 上新建项目，选择刚才 Fork 的仓库
+3. 在 Vercel 的环境变量设置中添加 `NETEASE_COOKIE` 变量, 点击部署
+4. 添加你的域名即可使用
+
+### 本地部署步骤
 
 #### 1. 克隆项目
 
 ```bash
-git clone https://github.com/Suxiaoqinx/Netease_url.git
+git clone https://github.com/moefurina/Netease_url.git
 cd Netease_url
 ```
 
@@ -73,7 +80,7 @@ pip install -r requirements.txt
 
 #### 3. 配置 Cookie
 
-复制 `.env.example` 文件为 `.env`，并在其中填入黑胶会员账号的 Cookie：
+在`.env`中填入黑胶会员账号的 Cookie：
 
 > 💡 **获取 Cookie 方法**：
 >
@@ -332,7 +339,7 @@ Content-Type: application/json
 
 ## 反馈与交流
 
-- 在 Github [Issues](https://github.com/Suxiaoqinx/Netease_url/issues) 提交反馈
+- 在 Github [Issues](https://github.com/moefurina/Netease_url/issues) 提交反馈
 - 或访问 [我的博客](https://www.toubiec.cn)
 
 ---
